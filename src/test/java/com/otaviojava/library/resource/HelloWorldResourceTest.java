@@ -40,7 +40,7 @@ public class HelloWorldResourceTest {
         String baseUrl = deploymentUrl.toString();
         
         Client client = ClientBuilder.newClient();
-        Response response = client.target(baseUrl + "resources/hello")
+        Response response = client.target(baseUrl + "hello")
                 .queryParam("name", "John")
                 .request(MediaType.TEXT_PLAIN)
                 .get();
