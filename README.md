@@ -48,4 +48,10 @@ Replace payara-oracle-nosql:${project.version} with the actual image name and ta
 That's it! You have successfully built and run the application in a Docker container.
 
 
+## Oracle NoSQL
+
+```shell
+ docker run -d --name oracle-instance -p 9999:8888 ghcr.io/oracle/nosql:latest-ce
+```
+
 
