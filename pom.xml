@@ -15,6 +15,7 @@
         <jakartaee-api.version>10.0.0</jakartaee-api.version>
         <payara.version>6.2025.9</payara.version>
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
+        <jnosql.version>1.1.10</jnosql.version>
     </properties>
     
     <dependencyManagement>
@@ -37,6 +38,11 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>org.eclipse.jnosql.databases</groupId>
+            <artifactId>jnosql-oracle-nosql</artifactId>
+            <version>${jnosql.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
