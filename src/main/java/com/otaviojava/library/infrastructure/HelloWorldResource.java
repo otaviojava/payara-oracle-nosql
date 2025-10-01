@@ -1,4 +1,4 @@
-package com.otaviojava.library.resource;
+package com.otaviojava.library.infrastructure;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;

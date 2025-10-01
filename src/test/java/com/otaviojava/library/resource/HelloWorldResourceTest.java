@@ -1,5 +1,7 @@
 package com.otaviojava.library.resource;
 
+import com.otaviojava.library.infrastructure.HelloWorldResource;
+import com.otaviojava.library.infrastructure.RestConfiguration;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
