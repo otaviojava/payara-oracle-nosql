@@ -2,6 +2,7 @@ package com.otaviojava.library.api;
 
 
 
+import com.otaviojava.library.application.BookService;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;

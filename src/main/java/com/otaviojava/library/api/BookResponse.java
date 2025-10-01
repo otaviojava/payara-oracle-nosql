@@ -7,10 +7,13 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import java.util.List;
 
-@JsonbVisibility(FieldAccessStrategy.class)
-@Schema(description = "Book request payload for creating or updating a book")
-public class BookRequest {
 
+@Schema(description = "Book representation for API responses")
+@JsonbVisibility(FieldAccessStrategy.class)
+public class BookResponse {
+
+    @Schema(description = "Unique identifier of the book", example = "123e4567-e89b-12d3-a456-426614174000")
+    private String id;
 
     @Schema(description = "Title of the book", example = "The Catcher in the Rye")
     private String title;
@@ -27,6 +30,10 @@ public class BookRequest {
     @Schema(description = "List of tags associated with the book", example = "[\"Classic\", \"Literature\", \"American\"]")
     private List<String> tags;
 
+    public String getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -34,6 +41,7 @@ public class BookRequest {
     public String getGenre() {
         return genre;
     }
+
 
     public String getAuthor() {
         return author;
@@ -43,8 +51,16 @@ public class BookRequest {
         return tags;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public int getPublicationYear() {
@@ -53,10 +69,6 @@ public class BookRequest {
 
     public void setPublicationYear(int publicationYear) {
         this.publicationYear = publicationYear;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
     }
 
     public void setAuthor(String author) {
