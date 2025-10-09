@@ -1,0 +1,35 @@
+services:
+  oracle-nosql:
+    image: ghcr.io/oracle/nosql:latest-ce
+    container_name: oracle-nosql-db
+    ports:
+      - "9999:8080"
+    networks:
+      - payara-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  payara-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: payara-oracle-nosql:0.1-SNAPSHOT
+    pull_policy: never
+    container_name: payara-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      oracle-nosql:
+        condition: service_started
+    environment:
+      - JNOSQL_ORACLE_NOSQL_HOST=http://oracle-nosql:8080
+    networks:
+      - payara-network
+
+networks:
+  payara-network:
+    driver: bridge

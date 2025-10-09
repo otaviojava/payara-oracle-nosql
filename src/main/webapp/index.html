@@ -1,47 +1,468 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Welcome to Payara</title>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management - Payara Oracle NoSQL</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        <style>
-            body {
-                background-image: linear-gradient(rgba(0,44,62), rgba(0,44,62,.8), rgba(0,44,62));
-                color: #fff;
-            }
-            a {
-                font-weight: bold;
-                color: white;
-            }
-        </style>
-    </head>
-    <body>
+        :root {
+            --payara-dark: #002c3e;
+            --payara-blue: #0077be;
+            --payara-light: #e8f4f8;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+        }
 
-        <h1>Greetings from Payara!</h1>
-        <p>
-            Thank you for visiting <a href="https://www.payara.fish/">Payara</a>! We're thrilled to have you here. Payara is your go-to destination for all things Jakarta EE and Java enterprise applications.
-        </p>
-        <p>
-            <a href="https://www.payara.fish/"><img width="50%" src="images/payara-fish-logo.svg" alt="Payara Logo"></a>
-        </p>
-        <h2>RESTful Service</h2>
-        <p>
-            The REST end-point is available at <a href="resources/hello">resources/hello</a>.
-            You can supply a name to the end-point using a query parameter like this: <a href="resources/hello?name=John">resources/hello?name=John</a>
-        </p>
-        
-                
-        <h2>API Documentation</h2>
-        <p>
-            Explore the API documentation for the RESTful service using Swagger and OpenAPI. You can access the documentation at the following link:
-            <a href="swagger.html">Swagger and OpenAPI Documentation</a>
-        </p>
-        
-        <h2>Why Choose Payara?</h2>
-        <p>
-            Dive into the world of Jakarta EE with Payara. Our robust application server empowers you to build and deploy scalable, enterprise-ready solutions with ease.
-        </p>
-        <p>
-            Explore the incredible features of Payara, from seamless clustering to unparalleled support. Get started on your journey with Payara by checking out our <a href="https://docs.payara.fish/">documentation</a>.
-        </p>
-    </body>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, var(--payara-dark) 0%, #004d6b 100%);
+            min-height: 100vh;
+            color: white;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .logo-container {
+            margin-bottom: 2rem;
+        }
+
+        .logo-container img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, var(--payara-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            background: var(--payara-blue);
+            color: white;
+            padding: 1rem 3rem;
+            border-radius: 0.75rem;
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 119, 190, 0.4);
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 119, 190, 0.6);
+            background: #005a94;
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 1.5rem;
+            padding: 3rem;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: var(--payara-dark);
+            font-size: 2rem;
+            margin: 2rem 0 1rem 0;
+            border-bottom: 3px solid var(--payara-blue);
+            padding-bottom: 0.5rem;
+        }
+
+        h2:first-child {
+            margin-top: 0;
+        }
+
+        h3 {
+            color: var(--payara-dark);
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            border: 2px solid var(--payara-light);
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--payara-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 119, 190, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            margin-top: 0;
+        }
+
+        .code-block {
+            background: var(--payara-dark);
+            color: #a5f3fc;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .code-block code {
+            color: #a5f3fc;
+        }
+
+        .endpoint-list {
+            background: #f9fafb;
+            border-left: 4px solid var(--payara-blue);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .endpoint {
+            display: flex;
+            align-items: baseline;
+            margin: 0.75rem 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-weight: 700;
+            font-size: 0.875rem;
+            margin-right: 1rem;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .method-get {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .method-post {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .method-put {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .method-delete {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .tech-badge {
+            background: var(--payara-light);
+            color: var(--payara-dark);
+            padding: 0.5rem 1.25rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        a {
+            color: var(--payara-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #005a94;
+            text-decoration: underline;
+        }
+
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .quick-link {
+            display: block;
+            background: var(--payara-blue);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .quick-link:hover {
+            background: #005a94;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 119, 190, 0.4);
+            text-decoration: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .main-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <img src="images/payara-fish-logo.svg" alt="Payara Logo">
+            </div>
+            <h1>📚 Library Management System</h1>
+            <p class="subtitle">A modern Jakarta EE application powered by Payara Micro & Oracle NoSQL</p>
+            <a href="library.html" class="hero-cta">Launch Library Manager →</a>
+        </header>
+
+        <div class="main-content">
+            <h2>About This Application</h2>
+            <p>
+                This is a full-stack library management system demonstrating enterprise Java best practices
+                with Jakarta EE, Eclipse JNoSQL, and Oracle NoSQL database. The application provides a clean,
+                modern web interface for managing book collections along with a RESTful API for programmatic access.
+            </p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Modern UI</h3>
+                    <p>Clean, responsive interface built with vanilla JavaScript and CSS. No frameworks, just pure web standards.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔌</div>
+                    <h3>RESTful API</h3>
+                    <p>Full CRUD operations via REST endpoints with OpenAPI documentation and Swagger UI integration.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💾</div>
+                    <h3>NoSQL Database</h3>
+                    <p>Oracle NoSQL CE for flexible, schema-less data storage with Eclipse JNoSQL abstraction layer.</p>
+                </div>
+            </div>
+
+            <h2>Getting Started</h2>
+
+            <h3>Quick Start with Docker Compose</h3>
+            <p>The easiest way to run this application:</p>
+            <div class="code-block">
+<code># Clone and navigate to the project
+cd payara-oracle-nosql
+
+# Start both Payara and Oracle NoSQL
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Access the application
+open http://localhost:8080</code>
+            </div>
+
+            <h3>Local Development</h3>
+            <p>For local development with hot reload:</p>
+            <div class="code-block">
+<code># Start Oracle NoSQL database
+docker run -d --name oracle-nosql -p 9999:8888 \
+  ghcr.io/oracle/nosql:latest-ce
+
+# Run application with Payara Micro
+mvn clean package payara-micro:dev</code>
+            </div>
+
+            <h2>API Endpoints</h2>
+            <p>The application exposes the following REST endpoints:</p>
+
+            <div class="endpoint-list">
+                <div class="endpoint">
+                    <span class="method method-get">GET</span>
+                    <span>/api/books - List all books (with pagination)</span>
+                </div>
+                <div class="endpoint">
+                    <span class="method method-get">GET</span>
+                    <span>/api/books/{id} - Get book by ID</span>
+                </div>
+                <div class="endpoint">
+                    <span class="method method-post">POST</span>
+                    <span>/api/books - Create new book</span>
+                </div>
+                <div class="endpoint">
+                    <span class="method method-put">PUT</span>
+                    <span>/api/books/{id} - Update existing book</span>
+                </div>
+                <div class="endpoint">
+                    <span class="method method-delete">DELETE</span>
+                    <span>/api/books/{id} - Delete book</span>
+                </div>
+            </div>
+
+            <h3>Example API Usage</h3>
+            <div class="code-block">
+<code># Create a new book
+curl -X POST http://localhost:8080/api/books \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "genre": "FICTION",
+    "publicationYear": 1925,
+    "tags": ["Classic", "American Literature"]
+  }'
+
+# Get all books
+curl http://localhost:8080/api/books?page=1&size=10</code>
+            </div>
+
+            <h2>Technology Stack</h2>
+            <div class="tech-stack">
+                <span class="tech-badge">Jakarta EE 10</span>
+                <span class="tech-badge">Payara Micro 6.2025.9</span>
+                <span class="tech-badge">Eclipse JNoSQL 1.1.10</span>
+                <span class="tech-badge">Oracle NoSQL CE</span>
+                <span class="tech-badge">MicroProfile</span>
+                <span class="tech-badge">MapStruct 1.6.3</span>
+                <span class="tech-badge">Java 21</span>
+            </div>
+
+            <h2>Features</h2>
+            <ul style="margin-left: 2rem; color: var(--text-dark);">
+                <li style="margin: 0.5rem 0;">Full CRUD operations for book management</li>
+                <li style="margin: 0.5rem 0;">Tag-based book categorization</li>
+                <li style="margin: 0.5rem 0;">Pagination for large collections</li>
+                <li style="margin: 0.5rem 0;">Genre filtering and organization</li>
+                <li style="margin: 0.5rem 0;">RESTful API with OpenAPI documentation</li>
+                <li style="margin: 0.5rem 0;">Containerized deployment with Docker Compose</li>
+                <li style="margin: 0.5rem 0;">Multi-stage Docker builds for optimized images</li>
+                <li style="margin: 0.5rem 0;">NoSQL database integration via JNoSQL</li>
+            </ul>
+
+            <h2>Quick Links</h2>
+            <div class="quick-links">
+                <a href="library.html" class="quick-link">📚 Library Manager</a>
+                <a href="swagger.html" class="quick-link">📖 API Documentation</a>
+                <a href="api/books" class="quick-link">🔌 REST Endpoint</a>
+                <a href="https://github.com" class="quick-link" target="_blank">💻 View Source</a>
+            </div>
+
+            <h2>Project Structure</h2>
+            <div class="code-block">
+<code>src/main/java/com/otaviojava/library/
+├── api/              # REST resources & DTOs
+├── application/      # Service layer & mappers
+├── domain/           # Domain entities & repositories
+└── infrastructure/   # JAX-RS configuration
+
+src/main/resources/
+└── META-INF/
+    └── microprofile-config.properties
+
+src/main/webapp/
+├── library.html      # Library management UI
+├── swagger.html      # API documentation
+└── images/           # Static assets</code>
+            </div>
+
+            <h2>Learn More</h2>
+            <p>
+                This application demonstrates modern Jakarta EE development practices with Payara Micro.
+                For more information about the technologies used:
+            </p>
+            <ul style="margin-left: 2rem; color: var(--text-dark);">
+                <li style="margin: 0.5rem 0;"><a href="https://www.payara.fish/" target="_blank">Payara Platform</a> - Production-ready Jakarta EE runtime</li>
+                <li style="margin: 0.5rem 0;"><a href="https://docs.payara.fish/" target="_blank">Payara Documentation</a> - Complete guide to Payara features</li>
+                <li style="margin: 0.5rem 0;"><a href="https://jnosql.org/" target="_blank">Eclipse JNoSQL</a> - Jakarta NoSQL specification implementation</li>
+                <li style="margin: 0.5rem 0;"><a href="https://www.oracle.com/database/nosql/" target="_blank">Oracle NoSQL</a> - Distributed key-value database</li>
+                <li style="margin: 0.5rem 0;"><a href="https://jakarta.ee/" target="_blank">Jakarta EE</a> - Enterprise Java platform</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>Built with Payara Micro | Powered by Jakarta EE & Oracle NoSQL</p>
+            <p>Sample application for demonstration purposes</p>
+        </footer>
+    </div>
+</body>
 </html>
